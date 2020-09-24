@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mappers.T_board_mapper">
+	<select id="t_boardAll" resultType="t_boardDTO">
+		select * from test_board order by articleNum desc
+	</select>
+	<select id="t_boardDetail" parameterType="int" resultType="t_boardDTO">
+		select * from test_board where articleNum = #{value}
+	</select>
+	<insert id="t_boardinsert" parameterType="t_boardDTO">
+		insert into test_board(articleNum, parentNum, title, contents, imagefileName, hit, writer) values(
+			test_boardseq.nextval, 0, #{title}, #{contents}, #{imagefileName}, 0, #{writer}
+		)
+	</insert>
+	<!-- <select id="insertNum" resultType="int">
+		select max(nvl(articleNum,0))+1 from test_board
+	</select>-->
+	<select id="insertNum" resultType="int">
+    	select last_number from user_sequences
+   		where sequence_name='TEST_BOARDSEQ'
+ 	</select>
+ 	<delete id="t_boarddel" parameterType="int">
+ 		delete from test_board where articleNum = #{value}
+ 	</delete>
+ 	<update id="t_boardupdate" parameterType="T_boardDTO">
+ 		UPDATE test_board SET title=#{title}, contents=#{contents}, imagefileName = #{imagefileName} where articleNum = #{articleNum}
+ 	</update>
+ 	<select id="t_boardimgsel" parameterType="int" resultType="String">
+ 		select imagefileName from test_board where articleNum = #{value}
+ 	</select>
+</mapper>
